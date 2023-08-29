@@ -81,6 +81,7 @@ exports.deleteTour = catchAsync(async (req, res, next) => {
   }
 
   res.status(204).json({
+    // 204 means no content
     status: 'success',
     data: null,
   });
