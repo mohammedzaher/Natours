@@ -1,7 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-const helmet = require('helmet'); // set security HTTP headers
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -35,6 +37,12 @@ app.use(
   }),
 );
 
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
 // Serving static files
 app.use(express.static(`${__dirname}/public`)); // serving static files
 
@@ -45,7 +53,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 2) ROUTES
+// 2) ROUTES MIDDLEWARES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
