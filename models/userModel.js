@@ -41,6 +41,11 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  active: {
+    type: Boolean, // This is for soft delete
+    default: true,
+    select: false,
+  },
 });
 
 userSchema.pre('save', async function (next) {
@@ -59,6 +64,12 @@ userSchema.pre('save', async function (next) {
   if (!this.isModified('password') || this.isNew) return next(); // isNew: true if the document is new
 
   this.passwordChangedAt = Date.now() - 1000; // 1 second before the token is issued
+  next();
+});
+
+userSchema.pre(/^find/, function (next) {
+  // this points to the current query
+  this.find({ active: { $ne: false } });
   next();
 });
 
