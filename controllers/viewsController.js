@@ -20,7 +20,7 @@ exports.getTourBySlug = catchAsync(async (req, res, next) => {
     fields: 'review rating user',
   });
   // 2) Build template
-  console.log(tour);
+  // console.log(tour);
 
   // 3) Render template using data from 1)
   res.status(200).render('tour', {
