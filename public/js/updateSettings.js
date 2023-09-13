@@ -13,12 +13,10 @@ export const updateSettings = async (data, type) => {
       url: url,
       data,
     });
-    console.log(res);
     if (res.data.status === 'success') {
       showAlert('success', `${type.toUpperCase()} updated successfully!`);
     }
   } catch (err) {
-    console.log(err);
     showAlert('error', err.response.data.message);
   }
 };
