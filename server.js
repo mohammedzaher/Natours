@@ -13,6 +13,11 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED. Shutting down gracefully');
+  process.exit(1);
+});
+
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
